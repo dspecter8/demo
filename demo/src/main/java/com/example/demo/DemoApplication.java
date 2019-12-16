@@ -17,6 +17,7 @@ import com.example.demo.entity.CompteEpargne;
 import com.example.demo.entity.Operation;
 import com.example.demo.entity.Retrait;
 import com.example.demo.entity.Versement;
+import com.example.demo.metier.IBanqueMetier;
 /*
  * First Commit  : 16-12-2019 -->
  * Author and Committer changed
@@ -30,6 +31,8 @@ public class DemoApplication implements CommandLineRunner {
 	private CompteRepository compteRepository;
 	@Autowired
 	private OperationRepository operationRepository;
+	@Autowired
+	private IBanqueMetier banqueMetier;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -50,6 +53,11 @@ public class DemoApplication implements CommandLineRunner {
 		//Test Operation
 		Operation operation = operationRepository.save(new Versement(new Date(), 2500, compte2));
 		Operation operation2 = operationRepository.save(new Retrait(new Date(), 200, compte));
+		
+		//Test Couche metier
+		banqueMetier.verser(compte.getCodeCompte(), 11111111);
+		banqueMetier.virement(compte.getCodeCompte(), compte2.getCodeCompte(), 800);
+		banqueMetier.retirer(compte2.getCodeCompte(), 45);
 
 	}
 
